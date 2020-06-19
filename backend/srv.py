@@ -1,17 +1,20 @@
 import flask, requests, hashlib
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, make_response
 
 app = Flask(__name__)
 
 @app.route("/add", methods=["POST"])
 def add():
+    print(request.data)
     url = request.form["url"]
     hash = hashlib.sha256(url.encode("utf8")).hexdigest()
     text = requests.get(url).text
     file = open("pages/{0}".format(hash), "wb")
     file.write(text.encode("utf8"))
     file.close()
-    return "http://localhost:8000/{0}".format(hash) , 200
+    resp = make_response("http://localhost:8000/{0}".format(hash))
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    return resp
 
 @app.route("/<hash>")
 def get(hash):
