@@ -13,5 +13,9 @@
   },
   "background": {
     "scripts": ["background/bg.js"]
-  }
+  },
+
+  "permissions": [
+    "tabs"
+  ]
 }

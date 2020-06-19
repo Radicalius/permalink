@@ -5,7 +5,6 @@ app = Flask(__name__)
 
 @app.route("/add", methods=["POST"])
 def add():
-    print(request.data)
     url = request.form["url"]
     hash = hashlib.sha256(url.encode("utf8")).hexdigest()
     text = requests.get(url).text
