@@ -5,11 +5,10 @@ app = Flask(__name__)
 
 @app.route("/add", methods=["POST"])
 def add():
-    url = request.form["url"]
-    hash = hashlib.sha256(url.encode("utf8")).hexdigest()
-    text = requests.get(url).text
+    url = request.form["url"].encode("utf8")
+    hash = hashlib.sha256(url).hexdigest()
     file = open("pages/{0}".format(hash), "wb")
-    file.write(text.encode("utf8"))
+    file.write(request.form["content"].encode("utf8"))
     file.close()
     resp = make_response("http://localhost:8000/{0}".format(hash))
     resp.headers["Access-Control-Allow-Origin"] = "*"
